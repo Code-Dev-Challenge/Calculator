@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
-MyButtons button = new MyButtons();
+CreateCard buttonClass = new CreateCard();
 
-final controllers = TextEditingController();
+final controller = TextEditingController();
 
 class MyApp extends StatelessWidget {
   @override
@@ -20,6 +20,8 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
+
+
 }
 
 class MyHomePage extends StatefulWidget {
@@ -29,45 +31,69 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
+
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }  
+  String numText = '';
+  String ansText = '';
 
-  @override
-  void initState() {
-    button.controller.text = '0';
-    super.initState();
+  Padding createCard({String buttonText, Color color1, Color color2}){
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GestureDetector(
+        onTap: (){
+          setState(() {
+            
+            buttonClass.buttonPressed(buttonText);
+            numText = buttonClass.getNum();
+            ansText = buttonClass.getAns();
+          });
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            color: color1,
+            child: Center(
+              child: Text(
+                buttonText,
+                style: TextStyle(color: color2),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    
   }
 
-  final List<String> buttons = [
-    'C',
-    'DEL',
-    '%',
-    '/',
-    '9',
-    '8',
-    '7',
-    'x',
-    '6',
-    '5',
-    '4',
-    '-',
-    '3',
-    '2',
-    '1',
-    '+',
-    '0',
-    '.',
-    'ANS',
-    '=',
-  ];
+    List getCard(){
+    
+    List<Padding> _list = [];
+
+    for (int i = 0; i < buttonClass.buttons.length; i++) {
+      if( i == 0 ){
+        _list.add(createCard(buttonText: buttonClass.buttons[i], color1: Colors.green, color2: Colors.white)); 
+      }
+      else if( i == 1){
+        _list.add(createCard(buttonText: buttonClass.buttons[i], color1: Colors.red, color2: Colors.white)); 
+      }
+      else{
+        _list.add(createCard(buttonText: buttonClass.buttons[i], color1: buttonClass.isOperator(buttonClass.buttons[i]) ? Colors.blueGrey : Colors.blueGrey[50], color2:buttonClass.isOperator(buttonClass.buttons[i]) ? Colors.white : Colors.blueGrey )); 
+ 
+      }
+    }
+
+      return _list; 
+    }
+
+    @override
+    void initState() {
+    numText = buttonClass.getNum();
+            ansText = buttonClass.getAns();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 //color: Colors.red,
                                 child: Center(
                                   child: Text(
-                                    'Test',
+                                    ansText,
                                     style: TextStyle(fontSize: 20),
                                   ),
                                 ),
@@ -111,29 +137,29 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                       ),
-                      Expanded(
-                        flex: 2,
-                         child: Container(
-                           color: Colors.blue,
-                           child: Center(
-                             child: TextField(
-                               decoration: new InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                  contentPadding:
-                                      EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                                  
-                                ),
-                               textDirection: TextDirection.rtl,
-                               readOnly: true,
-                               controller: button.controller,
-                               
+                      Visibility(
+                        visible: false,
+                        child: Expanded(
+                          flex: 2,
+                           child: Container(
+                             color: Colors.blue,
+                             child: Padding(
+                               padding: const EdgeInsets.all(8.0),
+                               child: ListView(
+                                 scrollDirection: Axis.horizontal,
+                                 reverse: true,
+                                 children: <Widget>[
+                                   Align(
+                                     alignment: Alignment.centerRight,
+                                      child: Text(
+                                        numText
+                                      ),
+                                   ),
+                                 ],
+                               ),
                              ),
                            ),
-                         ),
+                        ),
                       )
                     ],
                   ),
@@ -143,56 +169,14 @@ class _MyHomePageState extends State<MyHomePage> {
             Expanded(
               flex: 2,
               child: Container(
-                child: Center(
-                  child: GridView.builder(
-                    padding: EdgeInsets.all(11.0),
-                      itemCount: buttons.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4),
-                      itemBuilder: (BuildContext context, int index) {
-                        if( index ==0 ){
-                          return MyButtons(
-                          buttonText: buttons[index],
-                          color:  Colors.green,
-                          textColor: Colors.white
-                          );
-                        }
-                        else if( index == 1){
-                          return MyButtons(
-                          buttonText: buttons[index],
-                          color:  Colors.red,
-                          textColor: Colors.white
-                          );
-                        }
-                        else{
-                          return MyButtons(
-                          buttonText: buttons[index],
-                          color: isOperator(buttons[index]) ? Colors.blueGrey : Colors.blueGrey[50],
-                          textColor:isOperator(buttons[index]) ? Colors.white : Colors.blueGrey,
-                        );
-                        }
-                      }),
-                ),
-              ),
+                margin: EdgeInsets.only(bottom: 3),
+                child: GridView.count(
+                crossAxisCount: 4,
+                //physics: ScrollPhysics(), // to disable GridView's scrolling
+                shrinkWrap: true,
+                children: getCard()),
+              )
             ),
-            
-            TextField(
-              controller: controllers,
-            ),
-            Card(
-              child: FlatButton(
-                onPressed: (){
-                  setState(() {
-                    controllers.text = '${controllers.text} 1';
-                  });
-                },
-                child: Container(
-                  child: Center(
-                    child: Text('pressme'),
-                  ),
-                ),
-              ),
-            )
           ],
         ),
       ),
@@ -200,13 +184,5 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
     }
-    bool isOperator(String x){
-      if(x == '%' || x == '/' ||x == 'x' ||x == '-' ||x == '+' ||x == '=' ){
-        return true;
-      }
-      else{
-        return false;
-      };
-    
-  }
+   
 }
