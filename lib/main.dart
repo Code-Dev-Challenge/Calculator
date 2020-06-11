@@ -138,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Visibility(
-                        visible: false,
+                        visible: true,
                         child: Expanded(
                           flex: 2,
                            child: Container(
