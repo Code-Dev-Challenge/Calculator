@@ -2,8 +2,8 @@ import 'package:calculator/main.dart';
 import 'package:flutter/material.dart';
 
 MyHomePage hp = new MyHomePage();
-class CreateCard{
 
+class CreateCard {
   String number = '';
   bool dotState = false;
   final controller = TextEditingController();
@@ -31,13 +31,12 @@ class CreateCard{
     '=',
   ];
 
-  bool isOperator(String x){
-      if(x == '%' || x == '/' ||x == 'x' ||x == '-' ||x == '+' ||x == '=' ){
-        return true;
-      }
-      else{
-        return false;
-      }
+  bool isOperator(String x) {
+    if (x == '%' || x == '/' || x == 'x' || x == '-' || x == '+' || x == '=') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   double firstNum = 0;
@@ -46,9 +45,12 @@ class CreateCard{
   String answerText = '';
   String operation = '';
 
-  void buttonPressed(String symbol){
+  void buttonPressed(String symbol) {
     bool dots = false;
-    if(symbol == 'DEL'){
+    if (symbol == 'DEL') {
+      number = '${number.substring(0,number.length-1)}';
+    } 
+    else if (symbol == 'C') {
       dotState = false;
       number = '';
       firstNum = null;
@@ -56,150 +58,157 @@ class CreateCard{
       answer = 0;
       answerText = '';
       operation = '';
-    }
-    else if(symbol == 'C'){
+    } 
+    
+    else if (symbol == '=') {
       dotState = false;
-      number = '';
-      firstNum = null;
-      secondNum = 0;
-      answer = 0;
-      answerText = '';
-      operation = '';
-    }
-    else if(symbol == '+'){
-      dotState = false;
-      answerText = '$answerText$symbol';
-      if(firstNum == null){
-        firstNum = double.parse(number);
-        operation = 'add';
-        number ='';
-      }
-      else if(firstNum != 0 || firstNum != null){
-        //secondNum = double.parse(number);
-        operation = 'add';
-        number = '';
-      }
-    }
-    else if(symbol == '-'){
-      dotState = false;
-      answerText = '$answerText$symbol';
-      if(firstNum == null){
-        firstNum = double.parse(number);
-        operation = 'minus';
-        number ='';
-      }
-      else if(firstNum != 0 || firstNum != null){
-        //secondNum = double.parse(number);
-        operation = 'minus';
-        number = '';
-      }
-    }
-    else if(symbol == 'x'){
-      dotState = false;
-      answerText = '$answerText$symbol';
-      if(firstNum == null){
-        firstNum = double.parse(number);
-        operation = 'times';
-        number ='';
-      }
-      else if(firstNum != 0 || firstNum != null){
-        //secondNum = double.parse(number);
-        operation = 'times';
-        number = '';
-      }
-    }
-    else if(symbol == '/'){
-      dotState = false;
-      answerText = '$answerText$symbol';
-      if(firstNum == null){
-        firstNum = double.parse(number);
-        operation = 'div';
-        number ='';
-      }
-      else if(firstNum != 0 || firstNum != null){
-        //secondNum = double.parse(number);
-        operation = 'div';
-        number = '';
-      }
-    }
-    else if(symbol == '%'){
-      dotState = false;
-      answerText = '$answerText$symbol';
-      if(firstNum == null){
-        firstNum = double.parse(number);
-        operation = 'mod';
-        number ='';
-      }
-      else if(firstNum != 0 || firstNum != null){
-        //secondNum = double.parse(number);
-        operation = 'mod';
-        number = '';
-      }
-    }
-    else if(symbol == '='){
-      dotState = false;
-      if(operation == 'add'){
-        secondNum = double.parse(number);
-        answer = firstNum + secondNum;
-        answerText = answer.toString();
-        firstNum = answer;
-        number = '';
-      }
-      if(operation == 'minus'){
-        secondNum = double.parse(number);
-        answer = firstNum - secondNum;
-        if(answer == 0 || answer == 0.0){
-          answer = 0;
+
+      String equation = number;
+      String first = '';
+      String second = '';
+      double num1 = 0;
+      double num2 = 0;
+      double ans = 0;
+
+      List<String> operations = ['*', '/', '+', '-','%'];
+
+      for (int out = 0; out < operations.length; out++) {
+        int i = 0;
+        for (; i < equation.length; i++) {
+          if (equation[i] == operations[out]) {
+            int k = i - 1;
+            int c = i + 1;
+            for (;; k--) {
+              if (k == -1 ||
+                  equation[k] == '*' ||
+                  equation[k] == '/' ||
+                  equation[k] == '+' ||
+                  equation[k] == '-' ||
+                  equation[k] == '%') {
+                //print(first);
+                break;
+              } else {
+                first = '${equation[k]}$first';
+              }
+            }
+            for (;; c++) {
+              if (c == equation.length ||
+                  equation[c] == '*' ||
+                  equation[c] == '/' ||
+                  equation[c] == '+' ||
+                  equation[c] == '-' ||
+                  equation[c] == '%') {
+                //print(second);
+                break;
+              } else {
+                second = '$second${equation[c]}';
+              }
+            }
+
+            num1 = double.parse(first);
+            num2 = double.parse(second);
+
+            if (operations[out] == '*') {
+              ans = getMult(num1, num2);
+            }
+            if (operations[out] == '/') {
+              ans = getDiv(num1, num2);
+            }
+            if (operations[out] == '+') {
+              ans = getAdd(num1, num2);
+            }
+            if (operations[out] == '-') {
+              ans = getMin(num1, num2);
+            }
+            if(operations[out] == '%'){
+              ans - getMod(num1, num2);
+            }
+            //equation = '${ans.toString()}';
+            if (k == -1) {
+              equation =
+                  '${ans.toString()}${equation.substring(c, equation.length)}';
+            } else if (c == equation.length) {
+              equation = '${equation.substring(0, k + 1)}${ans.toString()}';
+            } else if (k != -1 && c != equation.length) {
+              equation =
+                  '${equation.substring(0, k + 1)}${ans.toString()}${equation.substring(c, equation.length)}';
+            }
+            //print(equation);
+
+            i = 0;
+            first = '';
+            second = '';
+            num1 = 0;
+            num2 = 0;
+            ans = 0;
+          } else {
+            continue;
+          }
         }
-        print(answer);
-        answerText = answer.toString();
-        firstNum = answer;
-        number = '';
       }
-      if(operation == 'times'){
-        secondNum = double.parse(number);
-        answer = firstNum * secondNum;
-        answerText = answer.toString();
-        firstNum = answer;
-        number = '';
-      }
-      if(operation == 'div'){
-        secondNum = double.parse(number);
-        answer = firstNum / secondNum;
-        if(answer == 0 || answer == 0.0){
-          answer = 0;
-        }
-        answerText = answer.toString();
-        firstNum = answer;
-        number = '';
-      }
-      if(operation == 'mod'){
-        secondNum = double.parse(number);
-        answer = firstNum % secondNum;
-        answerText = answer.toString();
-        firstNum = answer;
-        number = '';
-      }
-    }
-    else if(symbol == '.'){
-      if(dotState == false){
-        answerText = '$answerText$symbol';
+
+      answerText = equation;
+
+    } else if (symbol == '.') {
+      if (dotState == false) {
+        //answerText = '$answerText$symbol';
         number = '$number$symbol';
         dotState = true;
       }
-    }
-    else{
-      answerText = '$answerText$symbol';
-      number = '$number$symbol';
-      
+    } 
+    else {
+      if(symbol == 'x'){
+        //answerText = '$answerText*';
+        number = '$number*';
+        dotState = false;
+      }
+      else if(symbol == '/'){
+        number = '$number$symbol';
+        dotState = false;
+      }
+      else if(symbol == '+'){
+        number = '$number$symbol';
+        dotState = false;
+      }
+      else if(symbol == '-'){
+        number = '$number$symbol';
+        dotState = false;
+      }
+      else if(symbol == 'ANS'){
+        dotState = false;
+        number = '$number$answerText';
+      }
+      else{
+        //answerText = '$answerText$symbol';
+        number = '$number$symbol';
+      }
     }
   }
 
-  String getAns(){
+  String getAns() {
     return answerText;
   }
 
-  String getNum(){
+  String getNum() {
     return number;
+  }
+
+  double getMult(double a, double b) {
+    return a * b;
+  }
+
+  double getDiv(double a, double b) {
+    return a / b;
+  }
+
+  double getAdd(double a, double b) {
+    return a + b;
+  }
+
+  double getMin(double a, double b) {
+    return a - b;
+  }
+  double getMod(double a, double b){
+    return a % b;
   }
 }
