@@ -13,6 +13,10 @@ class CreateCard {
     'DEL',
     '%',
     '/',
+    'sin',
+    'cos',
+    'tan',
+    'sec',
     '9',
     '8',
     '7',
@@ -32,7 +36,16 @@ class CreateCard {
   ];
 
   bool isOperator(String x) {
-    if (x == '%' || x == '/' || x == 'x' || x == '-' || x == '+' || x == '=') {
+    if (x == '%' ||
+        x == '/' ||
+        x == 'x' ||
+        x == '-' ||
+        x == '+' ||
+        x == '=' ||
+        x == 'sin' ||
+        x == 'cos' ||
+        x == 'tan' ||
+        x == 'sec') {
       return true;
     } else {
       return false;
@@ -48,9 +61,8 @@ class CreateCard {
   void buttonPressed(String symbol) {
     bool dots = false;
     if (symbol == 'DEL') {
-      number = '${number.substring(0,number.length-1)}';
-    } 
-    else if (symbol == 'C') {
+      number = '${number.substring(0, number.length - 1)}';
+    } else if (symbol == 'C') {
       dotState = false;
       number = '';
       firstNum = null;
@@ -58,9 +70,7 @@ class CreateCard {
       answer = 0;
       answerText = '';
       operation = '';
-    } 
-    
-    else if (symbol == '=') {
+    } else if (symbol == '=') {
       dotState = false;
 
       String equation = number;
@@ -70,7 +80,7 @@ class CreateCard {
       double num2 = 0;
       double ans = 0;
 
-      List<String> operations = ['*', '/', '+', '-','%'];
+      List<String> operations = ['*', '/', '+', '-', '%'];
 
       for (int out = 0; out < operations.length; out++) {
         int i = 0;
@@ -120,7 +130,7 @@ class CreateCard {
             if (operations[out] == '-') {
               ans = getMin(num1, num2);
             }
-            if(operations[out] == '%'){
+            if (operations[out] == '%') {
               ans - getMod(num1, num2);
             }
             //equation = '${ans.toString()}';
@@ -148,37 +158,30 @@ class CreateCard {
       }
 
       answerText = equation;
-
     } else if (symbol == '.') {
       if (dotState == false) {
         //answerText = '$answerText$symbol';
         number = '$number$symbol';
         dotState = true;
       }
-    } 
-    else {
-      if(symbol == 'x'){
+    } else {
+      if (symbol == 'x') {
         //answerText = '$answerText*';
         number = '$number*';
         dotState = false;
-      }
-      else if(symbol == '/'){
+      } else if (symbol == '/') {
         number = '$number$symbol';
         dotState = false;
-      }
-      else if(symbol == '+'){
+      } else if (symbol == '+') {
         number = '$number$symbol';
         dotState = false;
-      }
-      else if(symbol == '-'){
+      } else if (symbol == '-') {
         number = '$number$symbol';
         dotState = false;
-      }
-      else if(symbol == 'ANS'){
+      } else if (symbol == 'ANS') {
         dotState = false;
         number = '$number$answerText';
-      }
-      else{
+      } else {
         //answerText = '$answerText$symbol';
         number = '$number$symbol';
       }
@@ -208,7 +211,8 @@ class CreateCard {
   double getMin(double a, double b) {
     return a - b;
   }
-  double getMod(double a, double b){
+
+  double getMod(double a, double b) {
     return a % b;
   }
 }
