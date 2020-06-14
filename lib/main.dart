@@ -34,6 +34,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String numText = '';
   String ansText = '';
+  String tempText = '';
 
   Padding createCard({String buttonText, Color color1, Color color2}) {
     return Padding(
@@ -44,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
             buttonClass.buttonPressed(buttonText);
             numText = buttonClass.getNum();
             ansText = buttonClass.getAns();
+            tempText = buttonClass.getTemp();
           });
         },
         child: ClipRRect(
@@ -160,7 +162,33 @@ class _MyHomePageState extends State<MyHomePage> {
                                     alignment: Alignment.centerRight,
                                     child: Text(
                                       ansText,
-                                      style: TextStyle(fontSize: 50.0),
+                                      style: TextStyle(fontSize: 20.0),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      Visibility(
+                        visible: false,
+                        child: Expanded(
+                          flex: 1,
+                          child: Container(
+                            color: Colors.blueGrey.shade100,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                reverse: true,
+                                children: <Widget>[
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      tempText,
+                                      style: TextStyle(fontSize: 20.0),
                                     ),
                                   ),
                                 ],
@@ -169,6 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                       )
+
                     ],
                   ),
                 ),
@@ -181,10 +210,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   margin: EdgeInsets.only(bottom: 3),
                   child: GridView.count(
                       crossAxisCount: 4,
-                      physics:
-                          ScrollPhysics(), // to disable GridView's scrolling
+                      physics: ScrollPhysics() ,
+                           // to disable GridView's scrolling
                       childAspectRatio: (itemWidth / itemHeight),
-                      shrinkWrap: true,
+                      //shrinkWrap: true,
                       children: getCard()),
                 )),
           ],
