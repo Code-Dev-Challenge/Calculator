@@ -103,8 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final double itemHeight = (size.height - size.width - 26) / 1.7;
-    final double itemWidth = size.width / 2;
+    var dividesa = size.width * 2;
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade100,
       body: SafeArea(
@@ -171,7 +170,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                       ),
-
                       Visibility(
                         visible: false,
                         child: Expanded(
@@ -197,7 +195,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                       )
-
                     ],
                   ),
                 ),
@@ -210,9 +207,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   margin: EdgeInsets.only(bottom: 3),
                   child: GridView.count(
                       crossAxisCount: 4,
-                      physics: ScrollPhysics() ,
-                           // to disable GridView's scrolling
-                      childAspectRatio: (itemWidth / itemHeight),
+                      physics: ScrollPhysics(),
+                      // to disable GridView's scrolling
+                      childAspectRatio:
+                          (size.height / size.width) - (size.width / dividesa),
                       //shrinkWrap: true,
                       children: getCard()),
                 )),
