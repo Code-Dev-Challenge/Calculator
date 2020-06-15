@@ -78,6 +78,11 @@ class _MyHomePageState extends State<MyHomePage> {
             buttonText: buttonClass.buttons[i],
             color1: Colors.red,
             color2: Colors.white));
+      } else if (i >= 4 && i <= 7) {
+        _list.add(createCard(
+            buttonText: buttonClass.buttons[i],
+            color1: Colors.grey.shade600,
+            color2: Colors.white));
       } else {
         _list.add(createCard(
             buttonText: buttonClass.buttons[i],
@@ -104,6 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var dividesa = size.width * 2;
+    var aspect = (size.height / size.width) - (size.width / dividesa);
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade100,
       body: SafeArea(
@@ -209,8 +215,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       crossAxisCount: 4,
                       physics: ScrollPhysics(),
                       // to disable GridView's scrolling
-                      childAspectRatio:
-                          (size.height / size.width) - (size.width / dividesa),
+                      childAspectRatio: aspect,
                       //shrinkWrap: true,
                       children: getCard()),
                 )),
