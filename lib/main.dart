@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String ansText = '';
   String tempText = '';
 
-  Padding createCard({String buttonText, Color color1, Color color2}) {
+  Widget createCard({String buttonText, Color color1, Color color2}) {
     return Padding(
       padding: EdgeInsets.all(3.0),
       child: GestureDetector(
@@ -51,6 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Container(
+            width: 80.0,
+            height: 65.0,
             color: color1,
             child: Center(
               child: Text(
@@ -63,40 +65,39 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+  // List getCard() {
+  //   List<Padding> _list = [];
 
-  List getCard() {
-    List<Padding> _list = [];
+  //   for (int i = 0; i < buttonClass.buttons.length; i++) {
+  //     if (i == 0) {
+  //       _list.add(createCard(
+  //           buttonText: buttonClass.buttons[i],
+  //           color1: Colors.green,
+  //           color2: Colors.white));
+  //     } else if (i == 1) {
+  //       _list.add(createCard(
+  //           buttonText: buttonClass.buttons[i],
+  //           color1: Colors.red,
+  //           color2: Colors.white));
+  //     } else if (i >= 4 && i <= 7) {
+  //       _list.add(createCard(
+  //           buttonText: buttonClass.buttons[i],
+  //           color1: Colors.grey.shade600,
+  //           color2: Colors.white));
+  //     } else {
+  //       _list.add(createCard(
+  //           buttonText: buttonClass.buttons[i],
+  //           color1: buttonClass.isOperator(buttonClass.buttons[i])
+  //               ? Colors.blueGrey
+  //               : Colors.blueGrey[50],
+  //           color2: buttonClass.isOperator(buttonClass.buttons[i])
+  //               ? Colors.white
+  //               : Colors.blueGrey));
+  //     }
+  //   }
 
-    for (int i = 0; i < buttonClass.buttons.length; i++) {
-      if (i == 0) {
-        _list.add(createCard(
-            buttonText: buttonClass.buttons[i],
-            color1: Colors.green,
-            color2: Colors.white));
-      } else if (i == 1) {
-        _list.add(createCard(
-            buttonText: buttonClass.buttons[i],
-            color1: Colors.red,
-            color2: Colors.white));
-      } else if (i >= 4 && i <= 7) {
-        _list.add(createCard(
-            buttonText: buttonClass.buttons[i],
-            color1: Colors.grey.shade600,
-            color2: Colors.white));
-      } else {
-        _list.add(createCard(
-            buttonText: buttonClass.buttons[i],
-            color1: buttonClass.isOperator(buttonClass.buttons[i])
-                ? Colors.blueGrey
-                : Colors.blueGrey[50],
-            color2: buttonClass.isOperator(buttonClass.buttons[i])
-                ? Colors.white
-                : Colors.blueGrey));
-      }
-    }
-
-    return _list;
-  }
+  //   return _list;
+  // }
 
   @override
   void initState() {
@@ -107,9 +108,68 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var dividesa = size.width * 2;
-    var aspect = (size.height / size.width) - (size.width / dividesa);
+    var buttonformat = Container(
+      margin: EdgeInsets.only(bottom: 3),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              buildCreateCard(Colors.green, Colors.white, 0),
+              buildCreateCard(Colors.red, Colors.white, 1),
+              buildCreateCard(Colors.blueGrey, Colors.blueGrey[50], 2),
+              buildCreateCard(Colors.blueGrey, Colors.blueGrey[50], 3),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              buildCreateCard(Colors.grey[600], Colors.white, 4),
+              buildCreateCard(Colors.grey[600], Colors.white, 5),
+              buildCreateCard(Colors.grey[600], Colors.white, 6),
+              buildCreateCard(Colors.grey[600], Colors.white, 7),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              buildCreateCard(Colors.white, Colors.blueGrey, 8),
+              buildCreateCard(Colors.white, Colors.blueGrey, 9),
+              buildCreateCard(Colors.white, Colors.blueGrey, 10),
+              buildCreateCard(Colors.blueGrey, Colors.blueGrey[50], 11),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              buildCreateCard(Colors.white, Colors.blueGrey, 12),
+              buildCreateCard(Colors.white, Colors.blueGrey, 13),
+              buildCreateCard(Colors.white, Colors.blueGrey, 14),
+              buildCreateCard(Colors.blueGrey, Colors.blueGrey[50], 15),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              buildCreateCard(Colors.white, Colors.blueGrey, 16),
+              buildCreateCard(Colors.white, Colors.blueGrey, 17),
+              buildCreateCard(Colors.white, Colors.blueGrey, 18),
+              buildCreateCard(Colors.blueGrey, Colors.blueGrey[50], 19),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              buildCreateCard(Colors.white, Colors.blueGrey, 20),
+              buildCreateCard(Colors.white, Colors.blueGrey, 21),
+              buildCreateCard(Colors.white, Colors.blueGrey, 22),
+              buildCreateCard(Colors.blueGrey, Colors.blueGrey[50], 23),
+            ],
+          ),
+        ],
+      ),
+    );
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade100,
       body: SafeArea(
@@ -207,21 +267,24 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Divider(),
-            Expanded(
-                flex: 3,
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 3),
-                  child: GridView.count(
-                      crossAxisCount: 4,
-                      physics: ScrollPhysics(),
-                      // to disable GridView's scrolling
-                      childAspectRatio: aspect,
-                      //shrinkWrap: true,
-                      children: getCard()),
-                )),
+            Expanded(flex: 3, child: buttonformat),
           ],
         ),
       ),
     );
   }
+
+  Widget buildCreateCard(Color kulay1, Color kulay2, int pos) {
+    return createCard(
+        buttonText: buttonClass.buttons[pos], color1: kulay1, color2: kulay2);
+  }
 }
+
+// GridView.count(
+//                       padding: EdgeInsets.only(bottom: 10),
+//                       crossAxisCount: 4,
+//                       physics: ScrollPhysics(),
+//                       // to disable GridView's scrolling
+
+//                       shrinkWrap: true,
+//                       children: getCard()),
