@@ -17,7 +17,7 @@ class CreateCard {
     'sin',
     'cos',
     'tan',
-    'sec',
+    'x²',
     '9',
     '8',
     '7',
@@ -34,6 +34,10 @@ class CreateCard {
     '.',
     'ANS',
     '=',
+    'x3',
+    'xy',
+    '(',
+    ')',
   ];
 
   bool isOperator(String x) {

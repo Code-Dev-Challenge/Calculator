@@ -35,8 +35,17 @@ class _MyHomePageState extends State<MyHomePage> {
   String numText = '';
   String ansText = '';
   String tempText = '';
+  double wid = 80;
+  double hayt = 65;
+  double widmaliit = 83;
+  double haytmaliit = 40;
 
-  Widget createCard({String buttonText, Color color1, Color color2}) {
+  Widget createCard(
+      {String buttonText,
+      Color color1,
+      Color color2,
+      double width,
+      double height}) {
     return Padding(
       padding: EdgeInsets.all(3.0),
       child: GestureDetector(
@@ -51,8 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Container(
-            width: 80.0,
-            height: 65.0,
+            width: width,
+            height: height,
             color: color1,
             child: Center(
               child: Text(
@@ -116,55 +125,78 @@ class _MyHomePageState extends State<MyHomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              buildCreateCard(Colors.green, Colors.white, 0),
-              buildCreateCard(Colors.red, Colors.white, 1),
-              buildCreateCard(Colors.blueGrey, Colors.blueGrey[50], 2),
-              buildCreateCard(Colors.blueGrey, Colors.blueGrey[50], 3),
+              buildCreateCard(Colors.green, Colors.white, 0, wid, hayt),
+              buildCreateCard(Colors.red, Colors.white, 1, wid, hayt),
+              buildCreateCard(
+                  Colors.blueGrey, Colors.blueGrey[50], 2, wid, hayt),
+              buildCreateCard(
+                  Colors.blueGrey, Colors.blueGrey[50], 3, wid, hayt),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              buildCreateCard(
+                  Colors.grey[600], Colors.white, 4, widmaliit, haytmaliit),
+              buildCreateCard(
+                  Colors.grey[600], Colors.white, 5, widmaliit, haytmaliit),
+              buildCreateCard(
+                  Colors.grey[600], Colors.white, 6, widmaliit, haytmaliit),
+              buildCreateCard(
+                  Colors.grey[600], Colors.white, 7, widmaliit, haytmaliit),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              buildCreateCard(
+                  Colors.grey[600], Colors.white, 24, widmaliit, haytmaliit),
+              buildCreateCard(
+                  Colors.grey[600], Colors.white, 25, widmaliit, haytmaliit),
+              buildCreateCard(
+                  Colors.grey[600], Colors.white, 26, widmaliit, haytmaliit),
+              buildCreateCard(
+                  Colors.grey[600], Colors.white, 27, widmaliit, haytmaliit),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              buildCreateCard(Colors.grey[600], Colors.white, 4),
-              buildCreateCard(Colors.grey[600], Colors.white, 5),
-              buildCreateCard(Colors.grey[600], Colors.white, 6),
-              buildCreateCard(Colors.grey[600], Colors.white, 7),
+              buildCreateCard(Colors.white, Colors.blueGrey, 8, wid, hayt),
+              buildCreateCard(Colors.white, Colors.blueGrey, 9, wid, hayt),
+              buildCreateCard(Colors.white, Colors.blueGrey, 10, wid, hayt),
+              buildCreateCard(
+                  Colors.blueGrey, Colors.blueGrey[50], 11, wid, hayt),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              buildCreateCard(Colors.white, Colors.blueGrey, 8),
-              buildCreateCard(Colors.white, Colors.blueGrey, 9),
-              buildCreateCard(Colors.white, Colors.blueGrey, 10),
-              buildCreateCard(Colors.blueGrey, Colors.blueGrey[50], 11),
+              buildCreateCard(Colors.white, Colors.blueGrey, 12, wid, hayt),
+              buildCreateCard(Colors.white, Colors.blueGrey, 13, wid, hayt),
+              buildCreateCard(Colors.white, Colors.blueGrey, 14, wid, hayt),
+              buildCreateCard(
+                  Colors.blueGrey, Colors.blueGrey[50], 15, wid, hayt),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              buildCreateCard(Colors.white, Colors.blueGrey, 12),
-              buildCreateCard(Colors.white, Colors.blueGrey, 13),
-              buildCreateCard(Colors.white, Colors.blueGrey, 14),
-              buildCreateCard(Colors.blueGrey, Colors.blueGrey[50], 15),
+              buildCreateCard(Colors.white, Colors.blueGrey, 16, wid, hayt),
+              buildCreateCard(Colors.white, Colors.blueGrey, 17, wid, hayt),
+              buildCreateCard(Colors.white, Colors.blueGrey, 18, wid, hayt),
+              buildCreateCard(
+                  Colors.blueGrey, Colors.blueGrey[50], 19, wid, hayt),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              buildCreateCard(Colors.white, Colors.blueGrey, 16),
-              buildCreateCard(Colors.white, Colors.blueGrey, 17),
-              buildCreateCard(Colors.white, Colors.blueGrey, 18),
-              buildCreateCard(Colors.blueGrey, Colors.blueGrey[50], 19),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              buildCreateCard(Colors.white, Colors.blueGrey, 20),
-              buildCreateCard(Colors.white, Colors.blueGrey, 21),
-              buildCreateCard(Colors.white, Colors.blueGrey, 22),
-              buildCreateCard(Colors.blueGrey, Colors.blueGrey[50], 23),
+              buildCreateCard(Colors.white, Colors.blueGrey, 20, wid, hayt),
+              buildCreateCard(Colors.white, Colors.blueGrey, 21, wid, hayt),
+              buildCreateCard(Colors.white, Colors.blueGrey, 22, wid, hayt),
+              buildCreateCard(
+                  Colors.blueGrey, Colors.blueGrey[50], 23, wid, hayt),
             ],
           ),
         ],
@@ -274,9 +306,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget buildCreateCard(Color kulay1, Color kulay2, int pos) {
+  Widget buildCreateCard(
+      Color kulay1, Color kulay2, int pos, double wiiid, double haaayyt) {
     return createCard(
-        buttonText: buttonClass.buttons[pos], color1: kulay1, color2: kulay2);
+        width: wiiid,
+        height: haaayyt,
+        buttonText: buttonClass.buttons[pos],
+        color1: kulay1,
+        color2: kulay2);
   }
 }
 
