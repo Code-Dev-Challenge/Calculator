@@ -17,7 +17,7 @@ class CreateCard {
     'sin',
     'cos',
     'tan',
-    'x²',
+    'x^2',
     '9',
     '8',
     '7',
@@ -34,8 +34,8 @@ class CreateCard {
     '.',
     'ANS',
     '=',
-    'x3',
-    'xy',
+    'sqrt',
+    'x^y',
     '(',
     ')',
   ];
@@ -68,7 +68,14 @@ class CreateCard {
         print('hehe');
         number = '${number.substring(0, number.length - 3)}';
         tempText = '${tempText.substring(0, tempText.length - 1)}';
-      } else {
+      } 
+      
+      else if(number[number.length - 1] == 't'){
+        number = '${number.substring(0, number.length - 4)}';
+        tempText = '${tempText.substring(0, tempText.length - 1)}';
+      }
+      
+      else {
         number = '${number.substring(0, number.length - 1)}';
         tempText = '${tempText.substring(0, tempText.length - 1)}';
       }
@@ -84,140 +91,178 @@ class CreateCard {
     } else if (symbol == '=') {
       dotState = false;
 
-      String equation = tempText;
-      String first = '';
-      String second = '';
-      double num1 = 0;
-      double num2 = 0;
-      double ans = 0;
+        String equation = tempText;
+        String equation1 = '';
+        String newEquation = '';
+        String first = '';
+        String second = '';
+        double num1 = 0;
+        double num2 = 0;
+        double ans = 0;
 
-      List<String> operations = ['%', 's', 'c', 't', '*', '/', '+', 'm'];
+        List<String> operations = ['(',')','^', '%', 's', 'c', 't','r', '*', '/', '+', 'm'];
 
-      for (int out = 0; out < operations.length; out++) {
-        int i = 0;
-        for (; i < equation.length; i++) {
-          //gets the numbers that will simplified
-
-          if (equation[i] == operations[out]) {
-            int k = i - 1;
-            int c = i + 1;
-
-            if (operations[out] == 's' ||
-                operations[out] == 'c' ||
-                operations[out] == 't') {
-              for (;; c++) {
-                if (c == equation.length ||
-                    equation[c] == '*' ||
-                    equation[c] == '/' ||
-                    equation[c] == '+' ||
-                    equation[c] == 'm' ||
-                    equation[c] == 's' ||
-                    equation[c] == 'c' ||
-                    equation[c] == 't' ||
-                    equation[c] == '%') {
-                  break;
-                } else {
-                  second = '$second${equation[c]}';
+        
+        int out = 0;
+        for (; out < operations.length; out++) {
+          int i = 0;
+          for (; i < equation.length; i++) {
+            //gets the numbers that will simplified
+            //print(out);
+            if (equation[i] == operations[out]) {
+              int k = i - 1;
+              int c = i + 1;
+              
+              if(operations[out] == '('){
+                //print(i);
+                for(;;c++){
+                  if(equation[c] == operations[out+1]){
+                    //print(equation1);
+                    break;
+                  }
+                  else{
+                    equation1 = '$equation1${equation[c]}';
+                  }
+                }
+                
+                newEquation = simplify(equation1);
+                
+                //print(newEquation);
+                
+                if(i == 0){
+                  
+                  equation =
+                    '$newEquation${equation.substring(c+1, equation.length)}';
+                }
+                else if(c == equation.length-1){
+                  
+                    equation = '${equation.substring(0, i)}$newEquation';
+                }
+                else if (i != 0 && c != equation.length) {
+                  //print('hehe');
+                equation =
+                    '${equation.substring(0, i)}$newEquation${equation.substring(c+1, equation.length)}';
+              }
+              
+                //print(equation);
+                i = 0;
+                out = -1;
+                equation1 = '';
+                first = '';
+                second = '';
+                num1 = 0;
+                num2 = 0;
+                ans = 0;
+                break;
+              }
+              
+              else if (operations[out] == 's' ||
+                  operations[out] == 'c' ||
+                  operations[out] == 't' ||
+                  operations[out] == 'r') {
+                for (;; c++) {
+                  if (c == equation.length || operations.contains(equation[c])) {
+                    //print('hehe$second');
+                    break;
+                  } else {
+                    second = '$second${equation[c]}';
+                  }
+                }
+              } else {
+                for (;; k--) {
+                  if (k == -1 || operations.contains(equation[k])){
+                    //print('fnorm$first');
+                    break;
+                  } else {
+                    first = '${equation[k]}$first';
+                  }
+                }
+                for (;; c++) {
+                  if (c == equation.length || operations.contains(equation[c])) {
+                    //print('snorm$second');
+                    break;
+                  } else {
+                    second = '$second${equation[c]}';
+                  }
                 }
               }
-            } else {
-              for (;; k--) {
-                if (k == -1 ||
-                    equation[k] == '*' ||
-                    equation[k] == '/' ||
-                    equation[k] == '+' ||
-                    equation[k] == 'm' ||
-                    equation[k] == 's' ||
-                    equation[k] == 's' ||
-                    equation[k] == 'c' ||
-                    equation[k] == 't' ||
-                    equation[k] == '%') {
-                  break;
-                } else {
-                  first = '${equation[k]}$first';
-                }
+
+              //parses the numbers to be calculated
+
+              if (operations[out] == 's' ||
+                  operations[out] == 'c' ||
+                  operations[out] == 't' ||
+                  operations[out] == 'r') {
+                num2 = double.parse(second);
+              } else {
+                num1 = double.parse(first);
+                num2 = double.parse(second);
               }
-              for (;; c++) {
-                if (c == equation.length ||
-                    equation[c] == '*' ||
-                    equation[c] == '/' ||
-                    equation[c] == '+' ||
-                    equation[c] == 'm' ||
-                    equation[c] == 's' ||
-                    equation[c] == 'c' ||
-                    equation[c] == 't' ||
-                    equation[c] == '%') {
-                  break;
-                } else {
-                  second = '$second${equation[c]}';
-                }
+
+              //passes to a function to be calculated
+
+              if (operations[out] == 's') {
+                ans = getSin(num2);
               }
-            }
+              if (operations[out] == 'c') {
+                ans = getCos(num2);
+              }
+              if (operations[out] == 't') {
+                ans = getTan(num2);
+              }
+              if (operations[out] == 'r') {
+                ans = getRoot(num2);
+              }
+              if (operations[out] == '*') {
+                ans = getMult(num1, num2);
+              }
+              if (operations[out] == '/') {
+                ans = getDiv(num1, num2);
+              }
+              if (operations[out] == '+') {
+                ans = getAdd(num1, num2);
+              }
+              if (operations[out] == 'm') {
+                ans = getMin(num1, num2);
+              }
+              if (operations[out] == '%') {
+                ans = getMod(num1, num2);
+              }
+              if (operations[out] == '^') {
+                ans = getPow(num1, num2);
+              }
 
-            //parses the numbers to be calculated
+              //Builds the new equation to be simplified together with the new value
 
-            if (operations[out] == 's' ||
-                operations[out] == 'c' ||
-                operations[out] == 't') {
-              num2 = double.parse(second);
-            } else {
-              num1 = double.parse(first);
-              num2 = double.parse(second);
+              if (k == -1) {
+                equation =
+                    '${ans.toString()}${equation.substring(c, equation.length)}';
+              } else if (c == equation.length) {
+                equation = '${equation.substring(0, k + 1)}${ans.toString()}';
+              } else if (k != -1 && c != equation.length) {
+                equation =
+                    '${equation.substring(0, k + 1)}${ans.toString()}${equation.substring(c, equation.length)}';
+              }
+              
+              //print(equation);
+              
+              i = 0;
+              first = '';
+              second = '';
+              num1 = 0;
+              num2 = 0;
+              ans = 0;
+            } 
+            else {
+              continue;
             }
-
-            //passes to a function to be calculated
-
-            if (operations[out] == 's') {
-              ans = getSin(num2);
-            }
-            if (operations[out] == 'c') {
-              ans = getCos(num2);
-            }
-            if (operations[out] == 't') {
-              ans = getTan(num2);
-            }
-            if (operations[out] == '*') {
-              ans = getMult(num1, num2);
-            }
-            if (operations[out] == '/') {
-              ans = getDiv(num1, num2);
-            }
-            if (operations[out] == '+') {
-              ans = getAdd(num1, num2);
-            }
-            if (operations[out] == 'm') {
-              ans = getMin(num1, num2);
-            }
-            if (operations[out] == '%') {
-              ans = getMod(num1, num2);
-            }
-
-            //Builds the new equation to be simplified together with the new value
-
-            if (k == -1) {
-              equation =
-                  '${ans.toString()}${equation.substring(c, equation.length)}';
-            } else if (c == equation.length) {
-              equation = '${equation.substring(0, k + 1)}${ans.toString()}';
-            } else if (k != -1 && c != equation.length) {
-              equation =
-                  '${equation.substring(0, k + 1)}${ans.toString()}${equation.substring(c, equation.length)}';
-            }
-
-            i = 0;
-            first = '';
-            second = '';
-            num1 = 0;
-            num2 = 0;
-            ans = 0;
-          } else {
-            continue;
           }
         }
-      }
 
-      answerText = equation;
-    } else if (symbol == '.') {
+        answerText = equation;
+    } 
+    
+    else if (symbol == '.') {
       if (dotState == false) {
         //answerText = '$answerText$symbol';
         number = '$number$symbol';
@@ -258,7 +303,38 @@ class CreateCard {
         dotState = false;
         number = '${number}tan';
         tempText = '${tempText}t';
-      } else {
+      } 
+      
+      else if(symbol == '('){
+        dotState = false;
+        number = '${number}\(';
+        tempText = '${tempText}\(';
+      }
+      else if(symbol == ')'){
+        dotState = false;
+        number = '${number}\)';
+        tempText = '${tempText}\)';
+      }
+
+      else if (symbol == 'x^2'){
+        dotState = false;
+        number = '${number}^2';
+        tempText = '${tempText}^2';
+      }
+      
+      else if (symbol == 'x^y'){
+        dotState = false;
+        number = '${number}^';
+        tempText = '${tempText}^';
+      }
+
+      else if (symbol == 'sqrt'){
+        dotState = false;
+        number = '${number}sqrt';
+        tempText = '${tempText}r';
+      }
+
+      else {
         //answerText = '$answerText$symbol';
         number = '$number$symbol';
         tempText = '$tempText$symbol';
@@ -276,6 +352,129 @@ class CreateCard {
 
   String getTemp() {
     return tempText;
+  }
+
+  String simplify(String pass){
+    
+    String equation = pass;
+    String first = '';
+    String second = '';
+    double num1 = 0;
+    double num2 = 0;
+    double ans = 0;
+
+    List<String> operations = ['^', '%', 's', 'c', 't','r', '*', '/', '+', 'm'];
+
+    for (int out = 0; out < operations.length; out++) {
+      int i = 0;
+      for (; i < equation.length; i++) {
+        //gets the numbers that will simplified
+
+        if (equation[i] == operations[out]) {
+          int k = i - 1;
+          int c = i + 1;
+
+          if (operations[out] == 's' ||
+              operations[out] == 'c' ||
+              operations[out] == 't' ||
+              operations[out] == 'r') {
+            for (;; c++) {
+              if (c == equation.length || operations.contains(equation[c])) {
+                //print('hehe$second');
+                break;
+              } else {
+                second = '$second${equation[c]}';
+              }
+            }
+          } else {
+            for (;; k--) {
+              if (k == -1 || operations.contains(equation[k])) {
+                //print(first);
+                break;
+              } else {
+                first = '${equation[k]}$first';
+              }
+            }
+            for (;; c++) {
+              if (c == equation.length || operations.contains(equation[c])) {
+                //print(second);
+                break;
+              } else {
+                second = '$second${equation[c]}';
+              }
+            }
+          }
+
+          //parses the numbers to be calculated
+
+          if (operations[out] == 's' ||
+              operations[out] == 'c' ||
+              operations[out] == 't' ||
+              operations[out] == 'r') {
+            num2 = double.parse(second);
+          } else {
+            num1 = double.parse(first);
+            num2 = double.parse(second);
+          }
+
+          //passes to a function to be calculated
+
+          if (operations[out] == 's') {
+            ans = getSin(num2);
+          }
+          if (operations[out] == 'c') {
+            ans = getCos(num2);
+          }
+          if (operations[out] == 't') {
+            ans = getTan(num2);
+          }
+          if (operations[out] == 'r') {
+            ans = getRoot(num2);
+          }
+          if (operations[out] == '*') {
+            ans = getMult(num1, num2);
+          }
+          if (operations[out] == '/') {
+            ans = getDiv(num1, num2);
+          }
+          if (operations[out] == '+') {
+            ans = getAdd(num1, num2);
+          }
+          if (operations[out] == 'm') {
+            ans = getMin(num1, num2);
+          }
+          if (operations[out] == '%') {
+            ans = getMod(num1, num2);
+          }
+          if (operations[out] == '^') {
+            ans = getPow(num1, num2);
+          }
+
+          //Builds the new equation to be simplified together with the new value
+
+          if (k == -1) {
+            equation =
+                '${ans.toString()}${equation.substring(c, equation.length)}';
+          } else if (c == equation.length) {
+            equation = '${equation.substring(0, k + 1)}${ans.toString()}';
+          } else if (k != -1 && c != equation.length) {
+            equation =
+                '${equation.substring(0, k + 1)}${ans.toString()}${equation.substring(c, equation.length)}';
+          }
+
+          i = 0;
+          first = '';
+          second = '';
+          num1 = 0;
+          num2 = 0;
+          ans = 0;
+        } else {
+          continue;
+        }
+      }
+    }
+    
+    return equation;
   }
 
   double getMult(double a, double b) {
@@ -312,4 +511,13 @@ class CreateCard {
     double rad = a * (pi / 180.0);
     return tan(rad);
   }
+
+  double getPow(double a, double b) {
+    return pow(a, b);
+  }
+
+  double getRoot(double a){
+    return sqrt(a);
+  }
+
 }
